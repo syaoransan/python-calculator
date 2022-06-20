@@ -1,11 +1,15 @@
 import tkinter as tk
 
+FONT_DEFAULT = ("Arial", 20)
 FONT_SMALL = ("Arial", "16")
 FONT_LARGE = ("Arial", "40", "bold")
 DIGITS_FONT_STYlE = ("Arial", "24", "bold")
 LIGHT_GRAY = "#F5F5F5"
+LIGHT_BLUE = "#CCEDFF"
 LABEL_COLOR = "#25265E"
 WHITE = "#FFFFFF"
+OFF_WHITE = "#F8FAFF"
+
 
 
 class Calculator:
@@ -31,7 +35,21 @@ class Calculator:
             1:(3, 1), 2:(3, 2), 3:(3, 3),
             0:(4, 2), '.':(4, 1)
         }
+        self.operation = {
+            "/" : "\u00F7",
+            "*" : "\u00D7",
+            "-" : "-",
+            "+" : "+"
+        }
+        self.button_frame.rowconfigure(0, weight=1)
+        for x in range(1, 5):
+            self.button_frame.rowconfigure(x, weight=1)
+            self.button_frame.columnconfigure(x, weight=1)
+
+
         self.create_digit_buttons()
+        self.create_operator_buttons()
+        self.create_special_buttons()
 
     # Display Frame function
     def create_display_frame(self):
@@ -85,11 +103,53 @@ class Calculator:
                 column=grid_value[1],
                 sticky=tk.NSEW
             )
+    # Create Operator Buttons
+    def create_operator_buttons(self):
+        i = 0
+        for operator, symbol in self.operation.items() :
+            button = tk.Button(
+                    self.button_frame,
+                    text=symbol,
+                    bg=OFF_WHITE,
+                    fg=LABEL_COLOR,
+                    font=FONT_DEFAULT,
+                    borderwidth=0
+                    )
+            button.grid(row=i, column=4, sticky=tk.NSEW)
+            i += 1
+    # Create Equal Button
+    def create_equal_button(self) :        
+        button = tk.Button(
+                self.button_frame,
+                text="=",
+                bg=LIGHT_BLUE,
+                fg=LABEL_COLOR,
+                font=FONT_DEFAULT,
+                borderwidth=0
+                )
+        button.grid(row=4, column=3, columnspan=2, sticky=tk.NSEW)
+    # Create Clear Button
+    def create_clear_button(self) :        
+        button = tk.Button(
+                self.button_frame,
+                text="C",
+                bg=OFF_WHITE,
+                fg=LABEL_COLOR,
+                font=FONT_DEFAULT,
+                borderwidth=0
+                )
+        button.grid(row=0, column=1, columnspan=3, sticky=tk.NSEW)
+
+    # Create Special Buttons
+    def create_special_buttons(self):
+        self.create_clear_button()
+        self.create_equal_button()
+        
 
 
     def run(self):
         self.window.mainloop()
-
+ 
 
 if __name__ == "__main__":
     calc = Calculator()
